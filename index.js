@@ -36,11 +36,11 @@ let setMachineType = (vm, zone, machineType) => runOperation(f => vm.setMachineT
 
 let changeMachineType = function* (vm, machineType) {
   if (!(yield getMetadata(vm)).machineType.endsWith("/" + machineType)) {
-    console.log("stopping VM");
+    console.log("stopping " + vm.name);
     yield stopVM(vm);
-    console.log("change VM to " + machineType);
+    console.log("changing " + vm.name + " to " + machineType);
     yield setMachineType(vm, "us-central1-f", machineType);
-    console.log("starting VM again");
+    console.log("starting " + vm.name + " again");
   }
   yield startVM(vm);
   console.log("VM ready");
@@ -63,7 +63,7 @@ let echoExec = cmd => new Promise(function (fulfil, reject) {
 
 co(function* () {
 
-  console.log("hi");
+  console.log("hello");
   try {
     let vm = yield getVM('instance-3');
     // Change VM to high cpu mode.
