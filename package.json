@@ -1,0 +1,24 @@
+{
+  "name": "gce",
+  "version": "1.0.0",
+  "description": "utils for gce",
+  "main": "index.js",
+  "dependencies": {
+    "co": "^4.6.0",
+    "gcloud": "git+https://github.com/arthuredelstein/gcloud-node.git#setMachineType"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arthuredelstein/gce-tbb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arthuredelstein/gce-tbb/issues"
+  },
+  "homepage": "https://github.com/arthuredelstein/gce-tbb#readme"
+}
