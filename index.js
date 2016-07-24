@@ -10,7 +10,7 @@ let changeMachineType = function* (vm, machineType) {
     console.log("stopping " + vm.name);
     yield stopVM(vm);
     console.log("changing " + vm.name + " to " + machineType);
-    yield setMachineType(vm, "us-central1-f", machineType);
+    yield setMachineType(vm, machineType);
     console.log("starting " + vm.name + " again");
   }
   yield startVM(vm);

@@ -30,7 +30,7 @@ let setMetadata = (vm, metadata) => runOperation(f => vm.setMetadata(metadata, f
 
 let getMetadata = vm => simpleQuery(callback => vm.getMetadata(callback));
 
-let setMachineType = (vm, zone, machineType) => runOperation(f => vm.setMachineType(zone, machineType, f));
+let setMachineType = (vm, machineType) => runOperation(f => vm.setMachineType(machineType, f));
 
 let sleepPromise = t => new Promise(resolve => setTimeout(resolve, t));
 
