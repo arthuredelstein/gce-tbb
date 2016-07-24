@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+const co = require('co');
+
+const { startVM, stopVM, setMachineType, getMetadata,
+        getVM, sleepPromise, echoExec, getExternalIP } = require('./utils.js');
+
+co(function* () {
+  let vm = yield getVM('instance-3');
+  let metadata = yield getMetadata(vm);
+  if (metadata.status !== "RUNNING") {
+    yield startVM(vm);
+    while (metadata.status !== "RUNNING") {
+      yield sleepPromise(1000);
+      metadata = yield getMetadata(vm);
+    }
+  }
+  let externalIP = getExternalIP(metadata);
+  console.log(externalIP);
+});
