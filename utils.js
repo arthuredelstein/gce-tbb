@@ -39,7 +39,8 @@ let getExternalIP = metadata => metadata.networkInterfaces[0].accessConfigs[0].n
 const exec = require('child_process').exec;
 
 let echoExec = cmd => new Promise(function (fulfil, reject) {
-  let childProcess = exec(cmd);
+  let childProcess = exec(cmd, { maxBuffer: Number.MAX_SAFE_INTEGER,
+                                 timeout: (30 * 60 * 1000) });
   childProcess.stdout.setEncoding('utf8');
   childProcess.stderr.setEncoding('utf8');
   childProcess.stdout.on('data', lines => process.stdout.write(lines));
