@@ -18,21 +18,22 @@ let changeMachineType = function* (vm, machineType) {
 };
 
 co(function* () {
-
-  console.log("hello");
   try {
+    let remoteCommand = process.argv.slice(2).join(" ");
     let vm = yield getVM('instance-3');
     // Change VM to high cpu mode.
-    yield changeMachineType(vm, "n1-highcpu-16");
+    yield changeMachineType(vm, "n1-highcpu-32");
     // Obtain the external IP
     let metadata = yield getMetadata(vm);
     let externalIP = getExternalIP(metadata);
     console.log("External IP: " + externalIP);
     console.log("Sleeping for 10 seconds");
     yield sleepPromise(10000);
-    console.log("building tor-browser.git");
-    yield echoExec('ssh ' + externalIP + ' "nproc && cd tor-browser && ./mach build"');
-    console.log("done building tor-browser.git");
+    console.log("starting remote command...");
+    let commandToExecute = 'ssh ' + externalIP + ' "sh -c \'' + remoteCommand + '\'"';
+    console.log(commandToExecute);
+    yield echoExec(commandToExecute);
+    console.log("done");
     yield changeMachineType(vm, "n1-standard-1");
     // Obtain the external IP again in case it changed
     let metadata2 = yield getMetadata(vm);

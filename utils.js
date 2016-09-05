@@ -2,7 +2,7 @@
 
 let gcloud = require('gcloud')({
   projectId: 'tbb1-996',
-  keyFilename: '../tbb1-f5c67db58226.json'
+  keyFilename: '../tbb1-key.json'
 });
 
 let gce = gcloud.compute();
