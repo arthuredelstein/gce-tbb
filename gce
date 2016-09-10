@@ -1,0 +1,65 @@
+#!/usr/bin/env node
+
+/* jshint esnext:true */
+
+const co = require('co');
+
+const { startVM, stopVM, setMachineType, getMetadata,
+        getVM, sleepPromise, echoExec, getExternalIP } = require('./utils.js');
+
+let changeMachineType = function* (vm, machineType) {
+  if (!(yield getMetadata(vm)).machineType.endsWith("/" + machineType)) {
+    console.log("stopping " + vm.name);
+    yield stopVM(vm);
+    console.log("changing " + vm.name + " to " + machineType);
+    yield setMachineType(vm, machineType);
+    console.log("starting " + vm.name + " again");
+  }
+  yield startVM(vm);
+  console.log("VM ready");
+};
+
+let runRemote = function* (vm, fast, remoteCommand) {
+  try {
+    console.log(remoteCommand);
+    // Change VM to requested cpu mode.
+    yield changeMachineType(vm, fast ? "n1-highcpu-32" : "n1-standard-1");
+    // Obtain the external IP
+    let metadata = yield getMetadata(vm);
+    let externalIP = getExternalIP(metadata);
+    console.log("External IP: " + externalIP);
+    console.log("Sleeping for 10 seconds");
+    yield sleepPromise(10000);
+    if (remoteCommand.length > 0) {
+        console.log("starting remote command...");
+    	let commandToExecute = `ssh ${externalIP} "sh -c '${remoteCommand}'"`;
+        console.log(commandToExecute);
+        yield echoExec(commandToExecute);
+    } else {
+        yield echoExec(`ssh ${externalIP}`);
+    }
+    console.log(`stopping ${vm.name}`);
+    yield stopVM(vm);
+    console.log("done");
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+co(function* () {
+  let localCommand = process.argv[2];
+  let remoteCommand = process.argv.slice(3).join(" ");
+  let vm = yield getVM('instance-3');
+  console.log(`${localCommand}, [${remoteCommand}]`);
+  switch (localCommand) {
+    case "fast":
+    case "slow":
+      yield runRemote(vm, localCommand === "fast", remoteCommand);
+      break;
+    case "stop":
+      console.log(`stopping ${vm.name}`);
+      yield stopVM(vm);
+      console.log("done");
+      break; 
+  }
+});
