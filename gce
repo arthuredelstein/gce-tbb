@@ -15,12 +15,11 @@ let changeMachineType = function* (vm, machineType) {
     yield setMachineType(vm, machineType);
     console.log("starting " + vm.name + " again");
   }
-  yield startVM(vm);
-  console.log("VM ready");
 };
 
 let runRemote = function* (vm, remoteCommand) {
   try {
+    yield startVM(vm);
     console.log(remoteCommand);
     // Obtain the external IP
     let metadata = yield getMetadata(vm);
