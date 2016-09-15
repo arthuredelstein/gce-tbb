@@ -19,11 +19,9 @@ let changeMachineType = function* (vm, machineType) {
   console.log("VM ready");
 };
 
-let runRemote = function* (vm, fast, remoteCommand) {
+let runRemote = function* (vm, remoteCommand) {
   try {
     console.log(remoteCommand);
-    // Change VM to requested cpu mode.
-    yield changeMachineType(vm, fast ? "n1-highcpu-32" : "n1-standard-1");
     // Obtain the external IP
     let metadata = yield getMetadata(vm);
     let externalIP = getExternalIP(metadata);
@@ -54,7 +52,12 @@ co(function* () {
   switch (localCommand) {
     case "fast":
     case "slow":
-      yield runRemote(vm, localCommand === "fast", remoteCommand);
+      // Change VM to requested cpu mode.
+      let fast = localCommand === "fast";
+      yield changeMachineType(vm, fast ? "n1-highcpu-32" : "n1-standard-1");
+      if (remoteCommand.length > 0) {
+        yield runRemote(vm, remoteCommand);
+      }
       break;
     case "stop":
       console.log(`stopping ${vm.name}`);
