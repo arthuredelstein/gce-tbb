@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/local/bin/node
 
 /* jshint esnext:true */
 
@@ -56,12 +56,14 @@ co(function* () {
       yield changeMachineType(vm, fast ? "n1-highcpu-32" : "n1-standard-1");
       if (remoteCommand.length > 0) {
         yield runRemote(vm, remoteCommand);
+      } else {
+        yield startVM(vm);
       }
       break;
     case "stop":
       console.log(`stopping ${vm.name}`);
       yield stopVM(vm);
       console.log("done");
-      break; 
+      break;
   }
 });
