@@ -57,6 +57,7 @@ co(function* () {
       if (remoteCommand.length > 0) {
         yield runRemote(vm, remoteCommand);
         if (fast) {
+          // Save money by stopping after the remote command.
           yield stopVM(vm);
         }
       } else {
