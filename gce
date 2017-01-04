@@ -56,6 +56,9 @@ co(function* () {
       yield changeMachineType(vm, fast ? "n1-highcpu-32" : "n1-standard-1");
       if (remoteCommand.length > 0) {
         yield runRemote(vm, remoteCommand);
+        if (fast) {
+          yield stopVM(vm);
+        }
       } else {
         yield startVM(vm);
       }
