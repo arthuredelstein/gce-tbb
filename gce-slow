@@ -1,0 +1,4 @@
+#!/bin/bash
+./gce-js slow
+ssh `./addr`
+./gce-js stop

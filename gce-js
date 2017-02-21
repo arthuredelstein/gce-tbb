@@ -29,7 +29,7 @@ let runRemote = function* (vm, remoteCommand) {
     yield sleepPromise(10000);
     if (remoteCommand.length > 0) {
         console.log("starting remote command...");
-    	let commandToExecute = `ssh ${externalIP} "sh -c '${remoteCommand}'"`;
+    	let commandToExecute = `ssh ${externalIP} "bash -c '${remoteCommand}'"`;
         console.log(commandToExecute);
         yield echoExec(commandToExecute);
     } else {
