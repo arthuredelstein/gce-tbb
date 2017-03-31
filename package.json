@@ -4,8 +4,8 @@
   "description": "utils for gce",
   "main": "index.js",
   "dependencies": {
-    "co": "^4.6.0",
-    "gcloud": "git+https://github.com/arthuredelstein/gcloud-node.git#setMachineType"
+    "@google-cloud/compute": "^0.6.0",
+    "co": "^4.6.0"
   },
   "devDependencies": {},
   "scripts": {

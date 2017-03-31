@@ -1,11 +1,9 @@
 /* jshint esnext:true */
 
-let gcloud = require('gcloud')({
+let gce = require('@google-cloud/compute')({
   projectId: 'tbb1-996',
   keyFilename: '../tbb1-key.json'
 });
-
-let gce = gcloud.compute();
 
 let simpleQuery = apiFunction => new Promise(function (fulfil, reject) {
   apiFunction((err, result) => err ? reject(err) : fulfil(result));
