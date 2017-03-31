@@ -4,8 +4,7 @@
   "description": "utils for gce",
   "main": "index.js",
   "dependencies": {
-    "@google-cloud/compute": "^0.6.0",
-    "co": "^4.6.0"
+    "@google-cloud/compute": "^0.6.0"
   },
   "devDependencies": {},
   "scripts": {

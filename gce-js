@@ -2,72 +2,72 @@
 
 /* jshint esnext:true */
 
-const co = require('co');
-
 const { startVM, stopVM, setMachineType, getMetadata,
         getVM, sleepPromise, echoExec, getExternalIP } = require('./utils.js');
 
-let changeMachineType = function* (vm, machineType) {
-  if (!(yield getMetadata(vm)).machineType.endsWith("/" + machineType)) {
+let changeMachineType = async function (vm, machineType) {
+  if (!(await getMetadata(vm)).machineType.endsWith("/" + machineType)) {
     console.log("stopping " + vm.name);
-    yield stopVM(vm);
+    await stopVM(vm);
     console.log("changing " + vm.name + " to " + machineType);
-    yield setMachineType(vm, machineType);
+    await setMachineType(vm, machineType);
     console.log("starting " + vm.name + " again");
   }
 };
 
-let runRemote = function* (vm, remoteCommand) {
+let runRemote = async function (vm, remoteCommand) {
   try {
-    yield startVM(vm);
+    await startVM(vm);
     console.log(remoteCommand);
     // Obtain the external IP
-    let metadata = yield getMetadata(vm);
+    let metadata = await getMetadata(vm);
     let externalIP = getExternalIP(metadata);
     console.log("External IP: " + externalIP);
     console.log("Sleeping for 10 seconds");
-    yield sleepPromise(10000);
+    await sleepPromise(10000);
     if (remoteCommand.length > 0) {
         console.log("starting remote command...");
     	let commandToExecute = `ssh ${externalIP} "bash -c '${remoteCommand}'"`;
         console.log(commandToExecute);
-        yield echoExec(commandToExecute);
+        await echoExec(commandToExecute);
     } else {
-        yield echoExec(`ssh ${externalIP}`);
+        await echoExec(`ssh ${externalIP}`);
     }
     console.log(`stopping ${vm.name}`);
-    yield stopVM(vm);
+    await stopVM(vm);
     console.log("done");
   } catch (e) {
     console.log(e);
   }
 };
 
-co(function* () {
+let run = async function () {
   let localCommand = process.argv[2];
   let remoteCommand = process.argv.slice(3).join(" ");
-  let vm = yield getVM('instance-3');
+  let vm = await getVM('instance-3');
   console.log(`${localCommand}, [${remoteCommand}]`);
   switch (localCommand) {
     case "fast":
     case "slow":
       // Change VM to requested cpu mode.
       let fast = localCommand === "fast";
-      yield changeMachineType(vm, fast ? "n1-highcpu-32" : "n1-standard-1");
+      await changeMachineType(vm, fast ? "n1-highcpu-32" : "n1-standard-1");
       if (remoteCommand.length > 0) {
-        yield runRemote(vm, remoteCommand);
+        await runRemote(vm, remoteCommand);
         if (fast) {
           // Save money by stopping after the remote command.
-          yield stopVM(vm);
+          await stopVM(vm);
         }
       } else {
-        yield startVM(vm);
+        await startVM(vm);
       }
       break;
     case "stop":
       console.log(`stopping ${vm.name}`);
-      yield stopVM(vm);
+      await stopVM(vm);
       console.log("done");
       break;
   }
-});
+};
+
+run();

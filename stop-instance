@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-const co = require('co');
-
 const { stopVM, getVM } = require('./utils.js');
 
-co(function* () {
-  let vm = yield getVM('instance-3');
-  yield stopVM(vm);
-});
+let stop = async function () {
+  let vm = await getVM('instance-3');
+  await stopVM(vm);
+};
+
+stop();
