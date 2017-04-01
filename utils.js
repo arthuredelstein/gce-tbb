@@ -28,8 +28,6 @@ let setMetadata = (vm, metadata) => runOperation(f => vm.setMetadata(metadata, f
 
 let getMetadata = vm => simpleQuery(callback => vm.getMetadata(callback));
 
-let setMachineType = (vm, machineType) => runOperation(f => vm.setMachineType(machineType, f));
-
 let sleepPromise = t => new Promise(resolve => setTimeout(resolve, t));
 
 let getExternalIP = metadata => metadata.networkInterfaces[0].accessConfigs[0].natIP;
@@ -51,7 +49,6 @@ module.exports = {
   startVM : startVM,
   stopVM : stopVM,
   getMetadata : getMetadata,
-  setMachineType : setMachineType,
   sleepPromise : sleepPromise,
   getExternalIP : getExternalIP,
   echoExec : echoExec

@@ -10,7 +10,7 @@ let changeMachineType = async function (vm, machineType) {
     console.log("stopping " + vm.name);
     await stopVM(vm);
     console.log("changing " + vm.name + " to " + machineType);
-    await setMachineType(vm, machineType);
+    await vm.resize(machineType);
     console.log("starting " + vm.name + " again");
   }
 };
