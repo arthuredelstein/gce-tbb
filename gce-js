@@ -62,6 +62,9 @@ let run = async function () {
         await startVM(vm);
       }
       break;
+    case "start":
+      await startVM(vm);
+      break;
     case "stop":
       console.log(`stopping ${vm.name}`);
       await stopVM(vm);
