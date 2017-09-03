@@ -4,7 +4,7 @@ const { startVM, stopVM, setMachineType, getMetadata,
         getVM, sleepPromise, echoExec, getExternalIP } = require('./utils.js');
 
 let addr = async function () {
-  let vm = await getVM('instance-3');
+  let vm = await getVM(process.argv[2]);
   let metadata = await getMetadata(vm);
   if (metadata.status !== "RUNNING") {
     await startVM(vm);
