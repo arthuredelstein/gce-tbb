@@ -42,9 +42,10 @@ let runRemote = async function (vm, remoteCommand) {
 };
 
 let run = async function () {
-  let localCommand = process.argv[2];
-  let remoteCommand = process.argv.slice(3).join(" ");
-  let vm = await getVM('instance-3');
+  let vmName = process.argv[2];
+  let localCommand = process.argv[3];
+  let remoteCommand = process.argv.slice(4).join(" ");
+  let vm = await getVM(vmName);
   console.log(`${localCommand}, [${remoteCommand}]`);
   switch (localCommand) {
     case "fast":
