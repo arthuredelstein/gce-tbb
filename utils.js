@@ -1,8 +1,9 @@
 /* jshint esnext:true */
+const path = require('path');
 
 let gce = require('@google-cloud/compute')({
   projectId: 'tbb1-996',
-  keyFilename: '../tbb1-key.json'
+  keyFilename: path.resolve(__dirname, '../tbb1-key.json'),
 });
 
 let simpleQuery = apiFunction => new Promise(function (fulfil, reject) {
