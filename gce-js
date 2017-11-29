@@ -27,7 +27,7 @@ let runRemote = async function (vm, remoteCommand) {
     await sleepPromise(10000);
     if (remoteCommand.length > 0) {
         console.log("starting remote command...");
-    	let commandToExecute = `ssh ${externalIP} "bash -c '${remoteCommand}'"`;
+    	let commandToExecute = `ssh ${externalIP} "bash -ci '${remoteCommand}'"`;
         console.log(commandToExecute);
         await echoExec(commandToExecute);
     } else {
