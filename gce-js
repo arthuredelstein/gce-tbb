@@ -1,4 +1,4 @@
-#!/usr/bin/node
+#!/usr/local/bin/node
 
 /* jshint esnext:true */
 
@@ -41,6 +41,11 @@ let runRemote = async function (vm, remoteCommand) {
   }
 };
 
+let machineTypes = { fast   : "n1-highcpu-32",
+                     medium : "n1-standard-2",
+                     slow   : "n1-standard-1" };
+
+
 let run = async function () {
   let vmName = process.argv[2];
   let localCommand = process.argv[3];
@@ -49,10 +54,10 @@ let run = async function () {
   console.log(`${localCommand}, [${remoteCommand}]`);
   switch (localCommand) {
     case "fast":
+    case "medium":
     case "slow":
       // Change VM to requested cpu mode.
-      let fast = localCommand === "fast";
-      await changeMachineType(vm, fast ? "n1-highcpu-32" : "n1-standard-1");
+      await changeMachineType(vm, machineTypes[localCommand]);
       if (remoteCommand.length > 0) {
         await runRemote(vm, remoteCommand);
         if (fast) {
