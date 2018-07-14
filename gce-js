@@ -60,7 +60,7 @@ let run = async function () {
       await changeMachineType(vm, machineTypes[localCommand]);
       if (remoteCommand.length > 0) {
         await runRemote(vm, remoteCommand);
-        if (fast) {
+        if (localCommand === "fast") {
           // Save money by stopping after the remote command.
           await stopVM(vm);
         }
